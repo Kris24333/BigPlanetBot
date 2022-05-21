@@ -45,14 +45,35 @@ func (telegramBot *TelegramBot) InitializeTB() {
 // Start bot
 func (telegramBot *TelegramBot) Start() {
 	for update := range telegramBot.Updates {
-		if update.Message != nil {
+		switch {
+		case update.Message != nil:
+			// Start analize massage
+			telegramBot.analyzeUpdate(update)
+		case update.CallbackQuery != nil:
+			// Start analize CallbackQuery
+			telegramBot.analyzeCallbackQuery(update)
+		default:
+			telegramBot.greetingsMsg(update)
+		}
+		/*if update.Message != nil {
 			// Start analize massage
 			telegramBot.analyzeUpdate(update)
 		} else if update.CallbackQuery != nil {
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
-		}
+		}*/
 	}
+}
+
+// Greetings msg
+func (telegramBot *TelegramBot) greetingsMsg(update tgbotapi.Update) {
+	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
+	user := update.Message.From
+	user2 := msg.Entities
+	msg.Text = "user1 " + update.FromChat().UserName
+	log.Println(user)
+	log.Println(user2)
+	telegramBot.API.Send(msg)
 }
 
 // Analize massage
