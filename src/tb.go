@@ -13,6 +13,7 @@ import (
 type TelegramBot struct {
 	API     *tgbotapi.BotAPI        // API телеграмма
 	Updates tgbotapi.UpdatesChannel // Канал обновлений
+	User    tgbotapi.User
 	//ActiveContactRequests []int64                 // ID чатов, от которых мы ожидаем номер
 }
 
@@ -44,6 +45,8 @@ func (telegramBot *TelegramBot) InitializeTB() {
 
 // Start bot
 func (telegramBot *TelegramBot) Start() {
+	//log.Println(tgbotapi.User)
+	telegramBot.greetingsMsg()
 	for update := range telegramBot.Updates {
 		switch {
 		case update.Message != nil:
@@ -52,25 +55,18 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
-		default:
-			telegramBot.greetingsMsg(update)
+			//default:
+			//	telegramBot.greetingsMsg(update)
 		}
-		/*if update.Message != nil {
-			// Start analize massage
-			telegramBot.analyzeUpdate(update)
-		} else if update.CallbackQuery != nil {
-			// Start analize CallbackQuery
-			telegramBot.analyzeCallbackQuery(update)
-		}*/
 	}
 }
 
 // Greetings msg
-func (telegramBot *TelegramBot) greetingsMsg(update tgbotapi.Update) {
-	msg := tgbotapi.NewMessage(update.Message.Chat.ID, "")
-	user := update.Message.From
+func (telegramBot *TelegramBot) greetingsMsg() {
+	msg := tgbotapi.NewMessageToChannel(telegramBot.User.UserName, "")
+	user := telegramBot.User.UserName
 	user2 := msg.Entities
-	msg.Text = "user1 " + update.FromChat().UserName
+	msg.Text = "user1 " + user
 	log.Println(user)
 	log.Println(user2)
 	telegramBot.API.Send(msg)
