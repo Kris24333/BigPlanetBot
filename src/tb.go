@@ -45,7 +45,8 @@ func (telegramBot *TelegramBot) InitializeTB() {
 
 // Start bot
 func (telegramBot *TelegramBot) Start() {
-	//log.Println(tgbotapi.User)
+	user := telegramBot.User.UserName
+	log.Println(user)
 	telegramBot.greetingsMsg()
 	for update := range telegramBot.Updates {
 		switch {
