@@ -95,13 +95,11 @@ func (telegramBot *TelegramBot) analyzeUpdate(update tgbotapi.Update) {
 		msg.Text, msg.ReplyMarkup = makeMassage(update.Message.Text)
 		msg.ParseMode = "markdown"
 	}
-	msg.ReplyToMessageID = update.Message.MessageID
 	telegramBot.API.Send(msg)
 }
 
 // Analize CallbackQuery
 func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
-	log.Println(update.CallbackQuery.Message)
 	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
 	switch update.CallbackQuery.Data {
 	case "by_list":
@@ -143,7 +141,13 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 			msg.Text = "К сожалению, я не смог понять чего ты хочешь. Попробуй ещё"
 		}
 	}
-	msg.ReplyToMessageID = update.CallbackQuery.Message.MessageID
+	// Respond to the callback query, telling Telegram to show the user
+	// a message with the data received.
+	callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
+	if _, err := telegramBot.API.Request(callback); err != nil {
+		panic(err)
+	}
+	// Send massage
 	telegramBot.API.Send(msg)
 }
 
