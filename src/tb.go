@@ -13,8 +13,6 @@ import (
 type TelegramBot struct {
 	API     *tgbotapi.BotAPI        // API телеграмма
 	Updates tgbotapi.UpdatesChannel // Канал обновлений
-	//User    tgbotapi.User
-	//ActiveContactRequests []int64                 // ID чатов, от которых мы ожидаем номер
 }
 
 var TB TelegramBot
@@ -95,7 +93,10 @@ func (telegramBot *TelegramBot) analyzeUpdate(update tgbotapi.Update) {
 		msg.Text, msg.ReplyMarkup = makeMassage(update.Message.Text)
 		msg.ParseMode = "markdown"
 	}
-	telegramBot.API.Send(msg)
+
+	if _, err := telegramBot.API.Send(msg); err != nil {
+		log.Panic(err)
+	}
 }
 
 // Analize CallbackQuery
@@ -148,7 +149,9 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 		panic(err)
 	}
 	// Send massage
-	telegramBot.API.Send(msg)
+	if _, err := telegramBot.API.Send(msg); err != nil {
+		log.Panic(err)
+	}
 }
 
 // Generate keyboard massage
