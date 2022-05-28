@@ -99,6 +99,7 @@ func (telegramBot *TelegramBot) analyzeUpdate(update tgbotapi.Update) {
 		msg.Text, msg.ReplyMarkup = makeMassage(update.Message.Text)
 		msg.ParseMode = "markdown"
 	}
+	msg.ReplyToMessageID = update.Message.MessageID
 	telegramBot.API.Send(msg)
 }
 
@@ -145,6 +146,7 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 			msg.Text = "К сожалению, я не смог понять чего ты хочешь. Попробуй ещё"
 		}
 	}
+	msg.ReplyToMessageID = update.Message.MessageID
 	telegramBot.API.Send(msg)
 }
 
