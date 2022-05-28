@@ -53,6 +53,12 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
+		case update.InlineQuery != nil:
+			log.Println("InlineQuery")
+			log.Println(update.InlineQuery)
+		case update.ChosenInlineResult != nil:
+			log.Println("ChosenInlineResult")
+			log.Println(update.ChosenInlineResult)
 		}
 	}
 }
