@@ -63,8 +63,8 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
-		case update.InlineQuery != nil:
-			telegramBot.analyzeInlineQuery(update)
+			//case update.InlineQuery != nil:
+			//telegramBot.analyzeInlineQuery(update)
 			//default:
 			//	telegramBot.greetingsMsg(update)
 		}
