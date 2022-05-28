@@ -146,7 +146,7 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 			msg.Text = "К сожалению, я не смог понять чего ты хочешь. Попробуй ещё"
 		}
 	}
-	msg.ReplyToMessageID = update.Message.MessageID
+	msg.ReplyToMessageID = update.CallbackQuery.Message.MessageID
 	telegramBot.API.Send(msg)
 }
 
