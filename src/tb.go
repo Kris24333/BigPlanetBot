@@ -42,11 +42,11 @@ func (telegramBot *TelegramBot) InitializeTB() {
 
 	telegramBot.Updates = updates
 
-	chat, err := bot.GetChat(tgbotapi.ChatInfoConfig{})
-	if err != nil {
-		log.Panic(err)
-	}
-	log.Println(chat.UserName)
+	//chat, err := bot.GetChat(tgbotapi.ChatInfoConfig)
+	//if err != nil {
+	//	log.Panic(err)
+	//}
+	//log.Println(chat.UserName)
 }
 
 // Start bot
@@ -63,10 +63,18 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
+		case update.InlineQuery != nil:
+			telegramBot.analyzeInlineQuery(update)
 			//default:
 			//	telegramBot.greetingsMsg(update)
 		}
 	}
+}
+
+// Analize InlineQuery
+func (telegramBot *TelegramBot) analyzeInlineQuery(update tgbotapi.Update) {
+	msg := tgbotapi.NewMessage(update.InlineQuery.From.ID, "InlineQuery")
+	telegramBot.API.Send(msg)
 }
 
 // Greetings msg
