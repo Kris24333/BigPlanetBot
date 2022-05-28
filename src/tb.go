@@ -107,7 +107,7 @@ func (telegramBot *TelegramBot) analyzeUpdate(update tgbotapi.Update) {
 					Data: "by_region",
 				},
 			}
-			msg.Text, msg.ReplyMarkup = generateKeyboard("Привет! Я покажу тебе много полезной информации о 198 странах мира.\n\n*Введи интересующую тебя страну* ниже\n\nИли укажи, каким образом ты хочешь её выбрать:", data, nil)
+			msg.Text, msg.ReplyMarkup = generateKeyboard("*Введи интересующую тебя страну* ниже\n\nИли укажи, каким образом ты хочешь её выбрать:", data, nil)
 			msg.ParseMode = "markdown"
 		case "by_list":
 			countries, err := Connection.GetCountries()
