@@ -53,10 +53,6 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
-		case update.InlineQuery != nil:
-			log.Printf("InlineQuery %s", update.InlineQuery.Query)
-		case update.ChosenInlineResult != nil:
-			log.Printf("ChosenInlineResult %s", update.ChosenInlineResult.Query)
 		}
 	}
 }
@@ -105,6 +101,7 @@ func (telegramBot *TelegramBot) analyzeUpdate(update tgbotapi.Update) {
 
 // Analize CallbackQuery
 func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
+	log.Println(update.CallbackQuery.Message)
 	msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, "")
 	switch update.CallbackQuery.Data {
 	case "by_list":
