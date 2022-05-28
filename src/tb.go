@@ -42,11 +42,6 @@ func (telegramBot *TelegramBot) InitializeTB() {
 
 	telegramBot.Updates = updates
 
-	//chat, err := bot.GetChat(tgbotapi.ChatInfoConfig)
-	//if err != nil {
-	//	log.Panic(err)
-	//}
-	//log.Println(chat.UserName)
 }
 
 // Start bot
@@ -63,31 +58,13 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
-		case update.InlineQuery != nil:
-			telegramBot.analyzeInlineQuery(update)
+			//case update.InlineQuery != nil:
+			//	telegramBot.analyzeInlineQuery(update)
 			//default:
 			//	telegramBot.greetingsMsg(update)
 		}
 	}
 }
-
-// Analize InlineQuery
-func (telegramBot *TelegramBot) analyzeInlineQuery(update tgbotapi.Update) {
-	log.Println("InlineQuery")
-	//msg := tgbotapi.NewMessage(update.InlineQuery.From.ID, "InlineQuery")
-	//telegramBot.API.Send(msg)
-}
-
-// Greetings msg
-/*func (telegramBot *TelegramBot) greetingsMsg() {
-	msg := tgbotapi.NewMessageToChannel(telegramBot.User.UserName, "")
-	user := telegramBot.User.UserName
-	user2 := msg.Entities
-	msg.Text = "user1 " + user
-	log.Println(user)
-	log.Println(user2)
-	telegramBot.API.Send(msg)
-}*/
 
 // Analize massage
 func (telegramBot *TelegramBot) analyzeUpdate(update tgbotapi.Update) {
@@ -178,6 +155,7 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 // Generate keyboard massage
 func generateKeyboard(default_text string, data []conf.Keyboard, err error) (string, interface{}) {
 	var msg tgbotapi.MessageConfig
+	log.Println(msg.ReplyToMessageID)
 	if err != nil {
 		msg.Text = "Произошла ошибка! Бот может работать некорректно"
 		log.Println(err)
