@@ -41,15 +41,10 @@ func (telegramBot *TelegramBot) InitializeTB() {
 	updates := bot.GetUpdatesChan(u)
 
 	telegramBot.Updates = updates
-
 }
 
 // Start bot
 func (telegramBot *TelegramBot) Start() {
-
-	//user := telegramBot.User.UserName
-	//log.Println("user:" + user)
-	//telegramBot.greetingsMsg()
 	for update := range telegramBot.Updates {
 		switch {
 		case update.Message != nil:
@@ -58,10 +53,6 @@ func (telegramBot *TelegramBot) Start() {
 		case update.CallbackQuery != nil:
 			// Start analize CallbackQuery
 			telegramBot.analyzeCallbackQuery(update)
-			//case update.InlineQuery != nil:
-			//	telegramBot.analyzeInlineQuery(update)
-			//default:
-			//	telegramBot.greetingsMsg(update)
 		}
 	}
 }
@@ -136,6 +127,7 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 			countries, err := Connection.GetCountriesByRegion(splitted_command[1])
 			msg.Text, msg.ReplyMarkup = generateKeyboard("Показаны все страны относящиеся к части света *"+splitted_command[1]+"*\n\nВыбери интересующую тебя страну из списка ниже:", countries, err)
 			msg.ParseMode = "markdown"
+			log.Println(msg.ReplyToMessageID)
 		case "embassiesinrussia":
 			msg.Text = makeMassageEmbassiesInRussia(splitted_command[1])
 			msg.ParseMode = "markdown"
@@ -155,7 +147,6 @@ func (telegramBot *TelegramBot) analyzeCallbackQuery(update tgbotapi.Update) {
 // Generate keyboard massage
 func generateKeyboard(default_text string, data []conf.Keyboard, err error) (string, interface{}) {
 	var msg tgbotapi.MessageConfig
-	log.Println(msg.ReplyToMessageID)
 	if err != nil {
 		msg.Text = "Произошла ошибка! Бот может работать некорректно"
 		log.Println(err)
