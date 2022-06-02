@@ -229,7 +229,7 @@ func makeMassageEmbassies(country string) string {
 	res, err := Connection.GetEmbassiesInCountry(country)
 	switch {
 	case err == sql.ErrNoRows:
-		return "Я ничего не нашёл по твоему запросу, попробуй ещё раз"
+		return "Я ничего не нашёл по твоему запросу, попробуй ещё раз."
 	case err != nil:
 		return "Произошла ошибка! Бот может работать неправильно!"
 	default:
